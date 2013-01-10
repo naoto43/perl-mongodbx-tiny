@@ -107,8 +107,9 @@ sub get {
     my $query = ref $proto eq 'HASH'         ? $proto
 	      : ref $proto eq 'MongoDB::OID' ? { _id => $proto }
 	      : { $self->field => $proto };
-
-    return MongoDBx::Tiny::GridFS::File->new( $self->gridfs->find_one($query), $self->field );
+    my $gridfs_object = $self->gridfs->find_one($query);
+    return unless $gridfs_object;
+    return MongoDBx::Tiny::GridFS::File->new( $gridfs_object, $self->field );
 }
 
 =head2 remove
