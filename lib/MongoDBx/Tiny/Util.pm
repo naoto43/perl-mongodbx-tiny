@@ -27,6 +27,9 @@ sub DEBUG { $ENV{MONGODBX_TINY_DEBUG} }
 
 sub util_class_is_ours {
     my $class = shift;
+
+    return unless $class;
+
     my ($tiny,$doc) = qw(MongoDBx::Tiny MongoDBx::Tiny::Document);
 
     return $tiny if eval { $class->isa($tiny) };
