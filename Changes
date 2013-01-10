@@ -1,5 +1,10 @@
 Revision history for MongoDBx-Tiny
 
+0.02    2013-01-10
+        fix some bugs
+        change document
+        published on github
+
 0.01    2012-07-27
         First version.
 
