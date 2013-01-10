@@ -341,7 +341,7 @@ sub single {
 
     my $reserved= $d_class->query_attributes('single');
     if ($reserved && ( my @attr = keys %$reserved)) {
-	$proto->{$_} = $reserved->{$_} for @attr;
+	$proto->{$_} ||= $reserved->{$_} for @attr;
     }
     $document = $collection->find_one($proto,$essential);
 
@@ -382,7 +382,7 @@ sub search {
     $query = util_to_oid($query,'_id',$d_class->field->list('OID'));
     my $reserved= $d_class->query_attributes('search');
     if ($reserved && ( my @attr = keys %$reserved)) {
-	$query->{$_} = $reserved->{$_} for @attr;
+	$query->{$_} ||= $reserved->{$_} for @attr;
     }
 
     my $cursor = $collection->find($query)->fields($essential);
