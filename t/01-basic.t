@@ -1,37 +1,38 @@
 #!/usr/bin/env perl
 
 use strict;
-use Data::Dumper;
 use Test::More tests => 1;
-
 $ENV{MONGODBX_TINY_DEBUG} = 1;
 
-package main;
-
-ok(my_test());
-
+use Data::Dumper;
+use Digest::SHA;
 use FindBin;
 use lib $FindBin::Bin . "/../t/lib";
 use MyData;
+use File::Temp qw(tempfile);
+
+ok(my_test());
 
 sub my_test {
     my $tiny = MyData->new;
-    use Digest::SHA;
-    $tiny->remove('foo',{ code => 123});
-    $tiny->remove('foo',{ code => "foo_123"});
 
-    my $foo  = $tiny->insert(foo => { code => Digest::SHA::sha1_hex(time . $$ . rand() . {}), name => "foo_123"});
+    my $foo  = $tiny->insert(foo => {
+	code => Digest::SHA::sha1_hex(time . $$ . rand() . {}), 
+	name => "foo_123"
+    });
 
-    $tiny->set_indexes('foo');
-
-    $foo->is_my_data_document;
     $foo->name('foo_321');	# not changed on database
     $foo->update;		# changed
+    die if $tiny->single('foo',{ code => $foo->code })->name ne 'foo_321';
 
     $foo->update({ name => "foo_0" });
+    die if $tiny->single('foo',{ code => $foo->code })->name ne 'foo_0';
+
+    $foo->is_my_data_document;
+    $tiny->set_indexes('foo');
+    $tiny->unset_indexes('foo');
 
     my $bar  = $tiny->insert(bar => { foo_id => $foo->id, code => 1, name => "foo_bar" });
-
     my $bar2 = $foo->bar;
 
     $bar2->remove;
@@ -96,14 +97,14 @@ sub my_test {
 
     # manage gridfs
     my $gridfs = $tiny->gridfs;
-    $gridfs->put('/etc/passwd', {"filename" => '/my/foo.txt' });
-    my $foo_txt = $gridfs->get({ filename => '/my/foo.txt' })->slurp;
-
-    $gridfs->put('/etc/passwd','/my/bar.txt');
-    my $bar_txt = $gridfs->get('/my/bar.txt')->slurp;
+    my ($fh, $filename) = tempfile();
+    $fh->print('one');
+    $fh->close;
+    $gridfs->put($filename, {"filename" => '/one' });
+    die if $gridfs->get({ filename => '/one' })->slurp ne 'one';
+    $gridfs->remove({ filename => '/one' });
+    die if $gridfs->get({ filename => '/one' });
 
     return 1;
 }
-
-
 
