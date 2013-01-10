@@ -764,6 +764,10 @@ __END__
 
 =back
 
+=head1 SUPPORT
+
+L<https://github.com/naoto43/mongodbx-tiny/>
+
 =head1 AUTHOR
 
 Naoto ISHIKAWA, C<< <toona at seesaa.co.jp> >>
