@@ -17,7 +17,7 @@ MongoDBx::Tiny::Document - document class
   COLLECTION_NAME 'foo';
 
   # FIELD NAME, sub{}, sub{}..
-  ESSENTIAL qw/code/; # like CDBI's Essential.
+  ESSENTIAL q/code/; # like CDBI's Essential.
   FIELD 'code', INT, LENGTH(10), DEFAULT('0'), REQUIRED;
   FIELD 'name', STR, LENGTH(30), DEFAULT('noname');
 

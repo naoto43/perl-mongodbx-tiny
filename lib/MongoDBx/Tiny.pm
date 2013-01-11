@@ -10,11 +10,11 @@ MongoDBx::Tiny - Simple Mongo ORM for Perl
 
 =head1 VERSION
 
-Version 0.02
+Version 0.02_01
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_01';
 
 =head1 SYNOPSIS
 

@@ -13,7 +13,7 @@ MongoDBx::Tiny::Attributes - offering field attributes
 
   COLLECTION_NAME 'foo';
 
-  ESSENTIAL qw/code/;
+  ESSENTIAL q/code/;
   FIELD 'code', INT, LENGTH(10), DEFAULT('0'), REQUIRED;
   FIELD 'name', STR, LENGTH(30), DEFAULT('noname');
 
