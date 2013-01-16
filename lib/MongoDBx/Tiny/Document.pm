@@ -606,7 +606,7 @@ sub data {
 
 sub list {
     my $self = shift;
-    keys $self->{_data};
+    keys %{$self->{_data}};
 }
 
 sub get {

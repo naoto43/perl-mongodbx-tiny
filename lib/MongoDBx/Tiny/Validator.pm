@@ -131,7 +131,7 @@ sub check {
     my $field      = $c_class->field;
 
     my $all_fields  = { map { $_ => 1 } $field->list };
-    my @fail_fields = grep { ! $all_fields->{$_} } keys $document;
+    my @fail_fields = grep { ! $all_fields->{$_} } keys %{$document};
     for (@fail_fields) {
         $self->set_error(
             $_ => ['not_field', (sprintf "%s is not field",$_)]
