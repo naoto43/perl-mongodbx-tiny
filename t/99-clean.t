@@ -5,6 +5,13 @@ use FindBin;
 use lib $FindBin::Bin . "/../t/lib";
 use MyData;
 use Test::More tests => 1;
-ok(MyData->new->database->drop);
+
+my $tiny = MyData->new;
+
+if ($tiny) {
+    ok($tiny->database->drop);
+} else {
+    ok(1);
+}
 
 

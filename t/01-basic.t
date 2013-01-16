@@ -14,8 +14,14 @@ use File::Temp qw(tempfile);
 ok(my_test());
 
 sub my_test {
-    my $tiny = MyData->new;
 
+    my $tiny =  MyData->new;
+
+    if (!$tiny) {
+	# no mongodb..
+	return 1;
+    }
+    
     my $foo  = $tiny->insert(foo => {
 	code => Digest::SHA::sha1_hex(time . $$ . rand() . {}), 
 	name => "foo_123"
