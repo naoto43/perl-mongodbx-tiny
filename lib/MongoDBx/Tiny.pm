@@ -134,7 +134,13 @@ sub new {
 	$class->install_database_name($opt->{database_name});
     }
     my $self = bless{},$class;
-    $self->connect;
+    eval { $self->connect; };
+
+    if ($@) {
+	Carp::carp $@;
+	return;
+    }
+
     return $self;
 }
 
