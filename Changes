@@ -1,5 +1,8 @@
 Revision history for MongoDBx-Tiny
 
+0.03    2013-01-22
+        fix some bug and test problem
+
 0.02    2013-01-10
         fix some bugs
         change document

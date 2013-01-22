@@ -10,11 +10,11 @@ MongoDBx::Tiny - Simple Mongo ORM for Perl
 
 =head1 VERSION
 
-Version 0.02_03
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02_03';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -88,8 +88,9 @@ A list of functions that can be exported.
 
 =head2 LOAD_PLUGIN
 
-      LOAD_PLUGIN 'One';
+      LOAD_PLUGIN 'One'; # MongoDBx::Tiny::Plugin::One
       LOAD_PLUGIN 'Two';
+      LOAD_PLUGIN '+Class::Name';
 
 =cut
 
@@ -623,8 +624,8 @@ sub document_class {
     package MyDB;
     use MongoDBx::Tiny;
   
-    LOAD_PLUGIN('One');
-    LOAD_PLUGIN('Two');
+    LOAD_PLUGIN('PluginName');
+    LOAD_PLUGIN('+Class::Name');
     
     # --------------------
     package MongoDBx::Tiny::Plugin::PluginName;
