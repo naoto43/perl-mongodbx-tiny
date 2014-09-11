@@ -10,11 +10,11 @@ MongoDBx::Tiny - Simple Mongo ORM for Perl
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -238,11 +238,17 @@ sub collection {
     my $name = shift or confess q|no collection name|;
     my $opt  = shift || {no_cache => 0};
     if ($opt->{no_cache}) {
-	return $self->database->$name();
+	if ($self->database->can('get_collection')) {
+	    return $self->database->get_collection($name);
+	} else {
+	    return $self->database->$name();
+	}
     } else {
 	my $cache = $self->{collection};
 	return $cache->{$name} if $cache->{$name};
-	return ($self->{collection}->{$name} = $self->database->$name());
+	return ($self->{collection}->{$name} = $self->database->can('get_collection') ? 
+		    $self->database->get_collection($name) : 
+		    $self->database->$name());
     }
 }
 
@@ -258,7 +264,9 @@ sub connect  {
 
     my $connection = $self->get_connection;
     my $db_name    = $self->database_name;
-    my $database   = $connection->$db_name();
+    my $database   = $connection->can('get_database') ? 
+	$connection->get_database($db_name) :
+	$connection->$db_name();
     $self->{connection} = $connection;
     $self->{database}   = $database;
     $self->{gridfs}     = undef;
